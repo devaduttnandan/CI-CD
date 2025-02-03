@@ -8,10 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -30,6 +27,9 @@ jobs:
     - name: Verify build output
       run: ls -l ./build/libs/
 
+    - name: Debug build context
+      run: ls -R
+
     - name: Build and push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
@@ -37,3 +37,5 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        context: .
+        dockerfile: Dockerfile
