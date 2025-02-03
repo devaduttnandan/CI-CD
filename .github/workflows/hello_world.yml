@@ -1,5 +1,5 @@
 name: Java CI with Gradle
-#h
+
 on:
   push:
     branches: [ "main" ]
@@ -8,8 +8,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-  
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -24,6 +26,9 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Verify build output
+      run: ls -l ./build/libs/
 
     - name: Build and push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
